@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code With Gautam | DevOps Katta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+        :root {
+            --ink: #0c1517;
+            --muted: #627276;
+            --paper: #f1f5f3;
+            --panel: #ffffff;
+            --line: #d5e0dc;
+            --navy: #071013;
+            --teal: #55e6d0;
+            --orange: #d7ff57;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        body::before {
+            content: '010011  deploy.pipeline()  //  agent.online  110010  stream.ready  //  infra.apply()  001101  model.route()  //  signal.sync';
+            position: fixed;
+            inset: auto -20% 4rem;
+            z-index: -1;
+            color: rgba(212, 175, 55, .045);
+            font: 600 clamp(.8rem, 2vw, 1.5rem) 'JetBrains Mono', monospace;
+            letter-spacing: .18em;
+            white-space: nowrap;
+            transform: rotate(-8deg);
+            pointer-events: none;
+        }
+
+        header { 
+            position: relative;
+            overflow: hidden;
+            color: white;
+            padding: 1.25rem clamp(1.25rem, 5vw, 5rem) 4.5rem;
+            background: var(--navy);
+            background-image: linear-gradient(120deg, rgba(7,16,19,.98), rgba(7,16,19,.88)), linear-gradient(rgba(85,230,208,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(85,230,208,.08) 1px, transparent 1px);
+            background-size: auto, 32px 32px, 32px 32px;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: 8%;
+            bottom: -170px;
+            border: 1px solid rgba(85, 230, 208, .35);
+            transform: rotate(45deg);
+        }
+
+        .topbar { max-width: 1180px; margin: 0 auto 4.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .brand { display: flex; align-items: center; gap: .7rem; color: #a9fff1; }
+        .logo-mark { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--teal); color: white; background: rgba(85, 230, 208, .18); font: 600 .72rem 'JetBrains Mono', monospace; letter-spacing: -.08em; box-shadow: 4px 4px 0 rgba(215, 255, 87, .8); }
+        .brand-name { font: 600 .85rem 'JetBrains Mono', monospace; letter-spacing: .08em; }
+        .status { display: flex; align-items: center; gap: .5rem; color: #b9c8d1; font-size: .78rem; }
+        .status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(215,255,87,.15); }
+
+        .hero { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 4rem; align-items: end; }
+        .eyebrow, .section-label { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; color: var(--teal); font-weight: 600; }
+        .eyebrow { margin-bottom: 1rem; }
+        header h1 { max-width: 720px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 1.02; letter-spacing: -.05em; margin-bottom: 1.25rem; }
+        .hero-copy { max-width: 560px; color: #c4d0d8; font-size: 1.08rem; }
+        .signal-panel { border: 1px solid rgba(85, 230, 208, .55); background: rgba(7, 24, 27, .82); padding: 1rem; box-shadow: 0 0 30px rgba(85, 230, 208, .1); }
+        .signal-head { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.14); padding-bottom: .75rem; margin-bottom: 1rem; color: #a9bbc5; font: 600 .67rem 'JetBrains Mono', monospace; letter-spacing: .08em; }
+        .signal-head span:last-child { color: var(--orange); }
+        .signal-chart { height: 76px; display: flex; align-items: end; gap: 5px; padding: .5rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+        .signal-chart i { display: block; flex: 1; min-width: 5px; background: var(--teal); opacity: .85; animation: pulse 2.4s ease-in-out infinite alternate; }
+        .signal-chart i:nth-child(2n) { background: #a9fff1; animation-delay: .4s; }
+        .signal-chart i:nth-child(3n) { background: var(--orange); animation-delay: .8s; }
+        .signal-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; padding-top: .85rem; }
+        .signal-stats small { display: block; color: #7e939f; font: .6rem 'JetBrains Mono', monospace; }
+        .signal-stats strong { display: block; color: white; font: 600 1rem 'JetBrains Mono', monospace; margin-top: .15rem; }
+        @keyframes pulse { from { transform: scaleY(.72); } to { transform: scaleY(1); } }
+
+        .transmission { position: absolute; inset: 0; overflow: hidden; opacity: .3; pointer-events: none; }
+        .transmission::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(85,230,208,.035) 6px 7px); }
+        .code-stream { position: absolute; top: -20%; display: grid; gap: .75rem; color: rgba(169,255,241,.5); font: .62rem 'JetBrains Mono', monospace; white-space: nowrap; animation: code-fall 18s linear infinite; }
+        .code-stream span:nth-child(odd) { color: rgba(255,255,255,.24); }
+        .code-stream.left { left: 6%; }
+        .code-stream.right { right: 5%; animation-duration: 24s; animation-delay: -8s; }
+        @keyframes code-fall { from { transform: translateY(0); } to { transform: translateY(145%); } }
+
+        nav { background: var(--panel); border-bottom: 1px solid var(--line); padding: 0 clamp(1.25rem, 5vw, 5rem); display: flex; gap: 2rem; }
+        nav a { color: var(--muted); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: .75rem; padding: 1rem 0; border-bottom: 2px solid transparent; }
+        nav a:hover, nav a:focus { color: var(--navy); border-color: var(--teal); }
+
+        .container { max-width: 1180px; margin: 0 auto; padding: 4.5rem clamp(1.25rem, 5vw, 5rem); }
+        .section { margin-bottom: 5.5rem; }
+        .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 1.5rem; }
+        .section h2 { color: var(--navy); font-size: clamp(1.8rem, 3vw, 2.7rem); line-height: 1.1; letter-spacing: -.04em; margin-top: .45rem; }
+        .section-intro { max-width: 650px; color: var(--muted); }
+        .overview { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(240px, .6fr); gap: 3rem; align-items: end; }
+        .overview-copy { font-size: 1.1rem; color: #40515d; }
+        .metrics { border-left: 2px solid var(--teal); padding-left: 1.25rem; display: grid; gap: .7rem; }
+        .metric { display: flex; justify-content: space-between; gap: 1rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; }
+        .metric span:first-child { color: var(--muted); }
+        .metric span:last-child { color: var(--navy); font-weight: 600; }
+
+        .tools-grid, .staff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .tool-card, .staff-card { background: var(--panel); border: 1px solid var(--line); padding: 1.35rem; border-radius: 4px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+        .tool-card:hover, .staff-card:hover { transform: translateY(-4px); border-color: var(--teal); box-shadow: 0 10px 24px rgba(16,42,67,.08); }
+        .tool-card::before { content: attr(data-index); display: block; color: var(--orange); font-family: 'JetBrains Mono', monospace; font-size: .68rem; margin-bottom: 1.6rem; }
+        .tool-card h3, .staff-card h3 { color: var(--navy); margin-bottom: .35rem; font-size: 1.05rem; }
+        .tool-card p, .staff-card p { color: var(--muted); font-size: .88rem; }
+        .staff-card { border-top: 3px solid var(--navy); }
+        .staff-card h3 { font-size: 1.15rem; }
+        .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .ai-card { min-height: 220px; padding: 1.5rem; background: var(--navy); color: white; border: 1px solid #1c3b3d; position: relative; overflow: hidden; }
+        .ai-card::after { content: ''; position: absolute; width: 110px; height: 110px; right: -42px; bottom: -46px; border: 1px solid rgba(85,230,208,.35); transform: rotate(45deg); }
+        .ai-card h3 { color: var(--teal); margin: 2.5rem 0 .55rem; font-size: 1.15rem; }
+        .ai-card p { color: #aec0bf; font-size: .88rem; max-width: 260px; }
+        .ai-number { color: var(--orange); font: .68rem 'JetBrains Mono', monospace; }
+
+        footer { background: var(--navy); color: #b9c8d1; padding: 2rem clamp(1.25rem, 5vw, 5rem); font-family: 'JetBrains Mono', monospace; font-size: .72rem; }
+        footer p { max-width: 1180px; margin: auto; }
+
+        @media (max-width: 800px) {
+            .hero { grid-template-columns: 1fr; gap: 2.5rem; }
+            .topbar { margin-bottom: 3.5rem; }
+            .overview { grid-template-columns: 1fr; gap: 2rem; }
+            .tools-grid, .staff-grid { grid-template-columns: repeat(2, 1fr); }
+            .ai-grid { grid-template-columns: 1fr; }
+            .section-heading { display: block; }
+            .section-intro { margin-top: .75rem; }
+        }
+
+        @media (max-width: 520px) {
+            header { padding-bottom: 3.5rem; }
+            .status { display: none; }
+            nav { gap: 1.25rem; overflow-x: auto; }
+            .container { padding-top: 3.5rem; }
+            .tools-grid, .staff-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="transmission" aria-hidden="true">
+            <div class="code-stream left"><span>01 // neural.route</span><span>await pipeline.init()</span><span>101101 / ACK</span><span>node.cluster.scale()</span><span>agent.status: online</span><span>ssh://core-01</span><span>stream.packet[2048]</span><span>deploy --stable</span><span>010011 // signal</span></div>
+            <div class="code-stream right"><span>telemetry.listen()</span><span>model.inference.ready</span><span>kubectl get pods</span><span>011010 / TX</span><span>latency = 18ms</span><span>infra.plan.apply()</span><span>edge.sync.complete</span><span>route://ai-gateway</span></div>
+        </div>
+        <div class="topbar">
+            <div class="brand"><span class="logo-mark" aria-hidden="true">DK</span><span class="brand-name">DEVOPS KATTA</span></div>
+            <div class="status">ENROLLMENT OPEN / 2024</div>
+        </div>
+        <div class="hero">
+            <p class="eyebrow">DevOps Katta / Systems / Delivery</p>
+            <h1>Code With<br>Gautam.</h1>
+            <p class="hero-copy">Learn to design resilient delivery pipelines, automate infrastructure, and operate cloud-native platforms with practical guidance from the DevOps Katta community.</p>
+        </div>
+        <div class="signal-panel" aria-label="AI operations telemetry">
+            <div class="signal-head"><span>AI OPS / TELEMETRY</span><span>● LIVE</span></div>
+            <div class="signal-chart" aria-hidden="true">
+                <i style="height: 42%"></i><i style="height: 68%"></i><i style="height: 54%"></i><i style="height: 82%"></i><i style="height: 61%"></i><i style="height: 94%"></i><i style="height: 72%"></i><i style="height: 88%"></i><i style="height: 66%"></i><i style="height: 100%"></i><i style="height: 78%"></i><i style="height: 91%"></i>
+            </div>
+            <div class="signal-stats"><div><small>PIPELINES</small><strong>24</strong></div><div><small>UPTIME</small><strong>99.9%</strong></div><div><small>LATENCY</small><strong>18ms</strong></div></div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#overview">Overview</a>
+        <a href="#ai-capabilities">AI Capabilities</a>
+        <a href="#tools">Tools</a>
+        <a href="#staff">Staff</a>
+    </nav>
+
+    <div class="container">
+        <section class="section" id="overview">
+            <div class="section-heading">
+                <div><p class="section-label">01 / The brief</p><h2>Course Overview</h2></div>
+            </div>
+            <div class="overview">
+                <p class="overview-copy">Master modern DevOps practices including continuous integration, continuous deployment, infrastructure automation, and cloud technologies. This advanced course covers industry-standard tools and best practices.</p>
+                <div class="metrics">
+                    <div class="metric"><span>FORMAT</span><span>HANDS-ON</span></div>
+                    <div class="metric"><span>LEVEL</span><span>ADVANCED</span></div>
+                    <div class="metric"><span>FOCUS</span><span>CLOUD NATIVE</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="tools">
+            <div class="section-heading"><div><p class="section-label">02 / The stack</p><h2>DevOps Tools Covered</h2></div><p class="section-intro">The practical toolchain behind repeatable releases and observable infrastructure.</p></div>
+            <div class="tools-grid">
+                <div class="tool-card" data-index="01 / CONTAINERS">
+                    <h3>Docker</h3>
+                    <p>Containerization and container orchestration</p>
+                </div>
+                <div class="tool-card" data-index="02 / ORCHESTRATION">
+                    <h3>Kubernetes</h3>
+                    <p>Container orchestration at scale</p>
+                </div>
+                <div class="tool-card" data-index="03 / DELIVERY">
+                    <h3>Jenkins</h3>
+                    <p>CI/CD automation and pipeline management</p>
+                </div>
+                <div class="tool-card" data-index="04 / VERSIONING">
+                    <h3>Git</h3>
+                    <p>Version control and collaboration</p>
+                </div>
+                <div class="tool-card" data-index="05 / PROVISIONING">
+                    <h3>Terraform</h3>
+                    <p>Infrastructure as Code (IaC)</p>
+                </div>
+                <div class="tool-card" data-index="06 / CONFIGURATION">
+                    <h3>Ansible</h3>
+                    <p>Configuration management automation</p>
+                </div>
+                <div class="tool-card" data-index="07 / CLOUD">
+                    <h3>AWS/Azure/GCP</h3>
+                    <p>Cloud platforms and services</p>
+                </div>
+                <div class="tool-card" data-index="08 / OBSERVABILITY">
+                    <h3>Prometheus & Grafana</h3>
+                    <p>Monitoring and visualization</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ai-capabilities">
+            <div class="section-heading"><div><p class="section-label">03 / Intelligence layer</p><h2>AI Capabilities</h2></div><p class="section-intro">Operational intelligence woven into every layer of the modern delivery system.</p></div>
+            <div class="ai-grid">
+                <article class="ai-card"><span class="ai-number">AI-01 / AGENTS</span><h3>Autonomous workflows</h3><p>Build practical agents that inspect incidents, suggest fixes, and move work from signal to action.</p></article>
+                <article class="ai-card"><span class="ai-number">AI-02 / OBSERVE</span><h3>Predictive observability</h3><p>Turn logs, metrics, and traces into earlier warnings with intelligent monitoring patterns.</p></article>
+                <article class="ai-card"><span class="ai-number">AI-03 / SHIP</span><h3>Assisted delivery</h3><p>Use AI to review changes, optimize pipelines, and keep releases reliable from commit to cloud.</p></article>
+            </div>
+        </section>
+
+        <section class="section" id="staff">
+            <div class="section-heading"><div><p class="section-label">04 / The crew</p><h2>Teaching Staff</h2></div><p class="section-intro">Practitioners who bring production experience into every session.</p></div>
+            <div class="staff-grid">
+                <div class="staff-card">
+                    <h3>Ankush</h3>
+                    <p>DevOps Expert</p>
+                </div>
+                <div class="staff-card">
+                    <h3>Nilam</h3>
+                    <p>Cloud Specialist</p>
+                </div>
+                <div class="staff-card">
+                    <h3>Swapnil</h3>
+                    <p>Infrastructure Expert</p>
+                </div>
+                <div class="staff-card">
+                    <h3>Gautam Mansvi</h3>
+                    <p>Automation Specialist</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 DevOps Engineering Course. All rights reserved.</p>
+    </footer>
+</body>
+</html>
